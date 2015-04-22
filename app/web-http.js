@@ -1,22 +1,25 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var agenda = require("./job-worker");
+
+var population = require("./routes/population")
 
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
+app.use('/population', population);
+
 app.get('/todos', function (req, res, next) {
   res.send('TODOS page');
 });
 
-app.post('/population', function(req, res, next) {
-
-    agenda.now('insert population', req.body);
-    agenda.on('complete:insert population', function() {
-        res.send('La tarea de INSERT POPULATION ha acabado');
-    });
+// error handlers
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.send("There was an error");
+  console.log(err);
+  console.log(err.stack);
 });
 
 app.listen(process.env.PORT, function() {

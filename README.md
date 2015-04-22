@@ -1,38 +1,58 @@
-# webcase
+# webCASE
+URL: [https://webcase-miguel-herrero.c9.io/](https://webcase-miguel-herrero.c9.io/)
 
-## Módulo Webservice
+## GET /population/cities
+Devuelve una lista de todas las ciudades (orden alfabético), con las estadísticas de cada una:
 
-### GET
-deberá mostrar la suma, el máximo, el mínimo, el valor medio y los valores únicos para los datos consultados.
+- sum: total de ciudadanos
+- avg: edad media de todos los ciudadanos
+- max: edad máxima de todos los ciudadanos
+- min: edad mínima de todos los ciudadanos
 
-Las consultas que se harán al WS serán de dos tipos:
-	- Número de personas (suma, media, máximo y mínimo) desglosado por edad
-	- Número de personas (suma, media, máximo y mínimo) desglosado por ciudad y edad
-	- Número de personas (suma, media, máximo y mínimo) desglosado por ciudad
-	- Número de personas desglosado por ciudad (y edad) según el último registro de cada una.
+## GET /population/ages
+Devuelve las estadísticas de todas las edades, y el total por cada una:
 
-### POST
-el webservice deberá generar un trabajo con la información recibida en una cola de trabajo.
+- sum: total de ciudadanos
+- avg: edad media de todos los ciudadanos
+- max: edad máxima registrada
+- min: edad mínima registrada
+- statsPerAge: edad y el número total de ciudadanos (orden descendente de edad)
 
-### PUT
-el webservice deberá generar un trabajo con la información recibida en una cola de trabajo.
+## GET /population/both
+Devuelve un listado de ciudades, con las estadísticas de cada una, y un listado de las edades de cada una:
 
-## Modelo de datos
-```
-{
-	"ts": 1429521853000,
-	"city": "Madrid",
-	"population": [
-		{"age":20, "count": 1000},
-		{"age":24, "count": 1343},
-		{"age":37, "count": 100},
-		{"age":50, "count": 2000}
-	]
-}
-```
+- sum: total de ciudadanos de esa ciudad
+- avg: edad media de los ciudadanos de esa ciudad
+- max: edad máxima registrada en esa ciudad
+- min: edad mínima registrada en esa ciudad
+- ages: edades y número de ciudadanos (orden descendente de edad)
 
-## Requisitos
-- MongoDB como base de datos
-- NodeJS como plataforma de desarrollo
-- Consultas a la base de datos mediante la función "aggregate"
-- Clusteres en paralelo, con máximo de 10 hilos en paralelo.
+## GET /population/both_last
+Devuelve un listado de ciudades con las edades de cada una, pero devolviendo sólo el último registro de cada una de ellas:
+
+- city: ciudad (orden alfabético)
+- population: edades y número de ciudadanos
+
+## POST /population/
+Inserta datos en la BD, metiéndose en una cola de trabajo asíncrona.
+
+###Entrada:
+**Tipo**: application/json
+
+**Formato**:
+
+    {
+    	"city": "Londres",
+    	"population": [
+			{"age":120, "count": 15}
+    	]
+	}
+
+###Respuesta:
+**Status**: 200
+
+**Body**: "La tarea de INSERT POPULATION ha acabado"
+
+## Notas
+- Los timestamps de la BD son generados mediante el ObjectID, por lo que tienen el formato ISO 8601
+- Máximo 10 clústeres en paralelo, generándose/cerrándose según la carga de trabajo.
