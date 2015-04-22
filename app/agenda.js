@@ -1,17 +1,28 @@
 var Agenda = require('agenda');
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require("mongodb").ObjectID;
 
+// Agenda jobs' connection to DB
 var agenda = new Agenda({db: { address: 'mongodb://caseuser:casepassword@ds035617.mongolab.com:35617/casedb'}});
 
-var insertDocuments = function(db, data, callback) {
-  // Get the documents collection
-  var collection = db.collection('prueba');
-  // Insert some documents
+/*
+  Function for inserting population
+*/
+var insertPopulation = function(db, data, callback) {
+  var collection = db.collection('population');
+  var objectId = new ObjectID(); //Contiene el timestamp ya
   collection.insert([
-    {a : 1}, {a : 2}, {a : 3}
-  ], function(err, result) {
-    console.log("Inserted 3 documents into the document collection");
-    callback(result);
+    {
+      "_id" : objectId,
+      "timestamp": objectId.getTimestamp(),
+      "city": data.city,
+      "population": data.population
+    }
+  ], function(error, result) {
+    if (error) {
+      callback(error, null);
+    }
+    callback(null, result);
   });
 }
 
@@ -19,18 +30,20 @@ agenda.define('insert population', function(job, done) {
     MongoClient.connect("mongodb://caseuser:casepassword@ds035617.mongolab.com:35617/casedb", function(err, db) {
         if(!err) {
             console.log("Base de datos conectada");
-            //console.log(job.attrs.data)
-            console.log('TAREA EJECUTADA');
             
             // Aquí hacer el INSERT
-            var data = job.attrs.data
-            insertDocuments(db, data, function() {
+            insertPopulation(db, job.attrs.data, function(error, result) {
+              if (error) {
+                job.fail(new Error('Error inserting population'));
+                job.save();
+                done();
+              } else {
                 db.close();
                 done();
+              }
             });
         } else {
-            console.log(err)
-            job.fail('error');
+            job.fail(new Error('Connection URL incorrect'));
             job.save();
             done();
         }

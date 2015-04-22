@@ -7,7 +7,7 @@ var cluster = require("cluster"),
 if (cluster.isMaster) {
     
     // Create a worker for each CPU
-    for (var i = 0; i < 4; i += 1) {
+    for (var i = 0; i < 2; i += 1) {
         addJobWorker();
         addWebWorker();
     }

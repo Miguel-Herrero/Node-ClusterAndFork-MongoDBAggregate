@@ -11,9 +11,9 @@ app.get('/todos', function (req, res, next) {
   res.send('TODOS page');
 });
 
-app.get('/population', function(req, res, next) {
+app.post('/population', function(req, res, next) {
 
-    agenda.now('insert population', {population: req.body});
+    agenda.now('insert population', req.body);
     agenda.on('complete:insert population', function() {
         res.send('La tarea de INSERT POPULATION ha acabado');
     });
