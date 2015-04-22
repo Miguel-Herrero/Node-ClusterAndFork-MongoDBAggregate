@@ -6,6 +6,8 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "agenda": "^0.6.28"
+    "agenda": "^0.6.28",
+    "body-parser": "^1.12.3",
+    "express": "^4.12.3"
   }
 }

@@ -7,7 +7,7 @@ var cluster = require("cluster"),
 if (cluster.isMaster) {
     
     // Create a worker for each CPU
-    for (var i = 0; i < cpuCount; i += 1) {
+    for (var i = 0; i < 4; i += 1) {
         addJobWorker();
         addWebWorker();
     }
@@ -30,13 +30,12 @@ if (cluster.isMaster) {
 } else {
     if (process.env.web) {
         console.log('start http server: ' + cluster.worker.id);
-        //require('./app/web-http'); // initialize the http server
+        require('./app/web-http.js'); // initialize the http server
     }
     
     if (process.env.job) {
         console.log('start job server: ' + cluster.worker.id);
-        //require('./app/job-worker'); // initialize the agenda
-        
+        require('./app/job-worker'); // initialize the agenda
     }
 }
 
