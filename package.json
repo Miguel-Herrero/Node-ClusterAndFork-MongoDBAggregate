@@ -1,0 +1,11 @@
+{
+  "name": "webCASE",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "agenda": "^0.6.28"
+  }
+}
