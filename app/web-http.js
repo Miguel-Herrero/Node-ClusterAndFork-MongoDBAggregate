@@ -5,6 +5,13 @@ var population = require("./routes/population")
 
 var app = express();
 
+app.get('*', function (req, res, next) {
+    // notify master about the request
+    process.send({ cmd: 'notifyRequest' });
+    //console.log('WORKER: request requested')
+    next();
+});
+
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
@@ -23,5 +30,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(process.env.PORT, function() {
-    console.log("Node server running on " + process.env.IP + ":" + process.env.PORT);
+  console.log("Node server running on " + process.env.IP + ":" + process.env.PORT);
 });
+
+module.exports = app;

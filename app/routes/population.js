@@ -167,7 +167,6 @@ router.get('/both', function(req, res, next) {
                     // Como no consigo que lo haga asíncronamente, le hago esperar
                     setTimeout(function() {
                         res.send(resultados)
-                        console.log(process.hrtime());
                     }, 500)
                 }
             });

@@ -55,4 +55,5 @@ Inserta datos en la BD, metiéndose en una cola de trabajo asíncrona.
 
 ## Notas
 - Los timestamps de la BD son generados mediante el ObjectID, por lo que tienen el formato ISO 8601
-- Máximo 10 clústeres en paralelo, generándose/cerrándose según la carga de trabajo.
+- El número máximo de clústeres en paralelo corresponden al número de núcleos de la CPU, generándose/cerrándose según la carga de trabajo (20 requests/segundo).
+- Cuando se abren más de 10 workers (aunque se hayan cerrado los anteriores), se emite un aviso de que hay demasiados EventEmmiter.
