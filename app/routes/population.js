@@ -63,7 +63,7 @@ router.get('/ages', function(req, res, next) {
             // General statistics of ages
             db.collection('population').aggregate([
                 { $unwind: '$population' },
-                { $group: { _id: null, sum: {$sum: '$population.count'}, avg: { $avg: '$population.age' }, max: { $max: '$population.age' }, min: { $min: '$population.age' } } },
+                { $group: { _id: 0, sum: {$sum: '$population.count'}, avg: { $avg: '$population.age' }, max: { $max: '$population.age' }, min: { $min: '$population.age' } } },
                 { $sort: { _id : -1 } },
                 { $limit: 1}
             ]).each(function(err, results) { //Only one result, so each is run just once
