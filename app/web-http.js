@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 
 app.use('/population', population);
 
-app.get('/todos', function (req, res, next) {
-  res.send('TODOS page');
+app.get('/test', function (req, res, next) {
+  res.send('Blank test page :)');
 });
 
 // error handlers

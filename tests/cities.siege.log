@@ -1,0 +1,32 @@
+2015-04-24 07:36:42
+siege -c 20 https://webcase-miguel-herrero.c9.io/population/cities
+
+Transactions:                    114 hits
+Availability:                  63.69 %
+Elapsed time:                  24.68 secs
+Data transferred:               0.03 MB
+Response time:                  3.32 secs
+Transaction rate:               4.62 trans/sec
+Throughput:                     0.00 MB/sec
+Concurrency:                   15.32
+Successful transactions:         114
+Failed transactions:              65
+Longest transaction:            3.67
+Shortest transaction:           1.59
+
+
+
+
+8s: numReqs = 5, thresholdCapability = 60, workers: 1
+{ [MongoError: no valid seed servers in list] name: 'MongoError', message: 'no valid seed servers in list' }
+Error
+    at Error.MongoError (/home/ubuntu/workspace/node_modules/mongodb/node_modules/mongodb-core/lib/error.js:13:17)
+    at null.<anonymous> (/home/ubuntu/workspace/node_modules/mongodb/node_modules/mongodb-core/lib/topologies/replset.js:1033:39)
+    at g (events.js:180:16)
+    at emit (events.js:98:17)
+    at null.<anonymous> (/home/ubuntu/workspace/node_modules/mongodb/node_modules/mongodb-core/lib/topologies/server.js:238:68)
+    at g (events.js:180:16)
+    at emit (events.js:98:17)
+    at null.<anonymous> (/home/ubuntu/workspace/node_modules/mongodb/node_modules/mongodb-core/lib/connection/pool.js:77:12)
+    at g (events.js:180:16)
+    at emit (events.js:98:17)

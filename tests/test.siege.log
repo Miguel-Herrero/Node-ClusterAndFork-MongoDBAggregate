@@ -1,0 +1,141 @@
+2015-04-24 08:06:32
+siege -c 50 -t 60s -b http://webcase-miguel-herrero.c9.io/test
+
+[error] socket: 1228494592 connection refused.: Connection refused
+
+Transactions:                   5282 hits
+Availability:                  96.55 %
+Elapsed time:                  59.62 secs
+Data transferred:               0.05 MB
+Response time:                  0.53 secs
+Transaction rate:              88.59 trans/sec
+Throughput:                     0.00 MB/sec
+Concurrency:                   46.55
+Successful transactions:        5282
+Failed transactions:             189
+Longest transaction:            1.62
+Shortest transaction:           0.44
+
+
+
+
+Threshold = 60
+Starting HTTP server on fork #1
+Node server running on 0.0.0.0:8080
+0s: numReqs = 0, thresholdCapability = 60, workers: 1
+1s: numReqs = 0, thresholdCapability = 60, workers: 1
+2s: numReqs = 0, thresholdCapability = 60, workers: 1
+3s: numReqs = 26, thresholdCapability = 60, workers: 1
+Creating new fork. Workers.ids = 1
+Starting HTTP server on fork #2
+4s: numReqs = 81, thresholdCapability = 120, workers: 2
+Node server running on 0.0.0.0:8080
+5s: numReqs = 94, thresholdCapability = 120, workers: 2
+Creating new fork. Workers.ids = 1,2
+Starting HTTP server on fork #3
+6s: numReqs = 149, thresholdCapability = 180, workers: 3
+Node server running on 0.0.0.0:8080
+7s: numReqs = 135, thresholdCapability = 180, workers: 3
+8s: numReqs = 141, thresholdCapability = 180, workers: 3
+9s: numReqs = 0, thresholdCapability = 180, workers: 3
+Killing unnecessary fork #3
+Killing unnecessary fork #2
+10s: numReqs = 0, thresholdCapability = 60, workers: 1
+11s: numReqs = 0, thresholdCapability = 60, workers: 1
+12s: numReqs = 0, thresholdCapability = 60, workers: 1
+13s: numReqs = 0, thresholdCapability = 60, workers: 1
+14s: numReqs = 0, thresholdCapability = 60, workers: 1
+15s: numReqs = 0, thresholdCapability = 60, workers: 1
+16s: numReqs = 9, thresholdCapability = 60, workers: 1
+17s: numReqs = 25, thresholdCapability = 60, workers: 1
+18s: numReqs = 44, thresholdCapability = 60, workers: 1
+Creating new fork. Workers.ids = 1
+Starting HTTP server on fork #4
+19s: numReqs = 69, thresholdCapability = 120, workers: 2
+Node server running on 0.0.0.0:8080
+20s: numReqs = 83, thresholdCapability = 120, workers: 2
+Creating new fork. Workers.ids = 1,4
+Starting HTTP server on fork #5
+21s: numReqs = 167, thresholdCapability = 180, workers: 3
+Node server running on 0.0.0.0:8080
+Creating new fork. Workers.ids = 1,4,5
+Starting HTTP server on fork #6
+22s: numReqs = 237, thresholdCapability = 240, workers: 4
+Node server running on 0.0.0.0:8080
+23s: numReqs = 189, thresholdCapability = 240, workers: 4
+Creating new fork. Workers.ids = 1,4,5,6
+Starting HTTP server on fork #7
+Creating new fork. Workers.ids = 1,4,5,6,7
+24s: numReqs = 326, thresholdCapability = 360, workers: 6
+Starting HTTP server on fork #8
+25s: numReqs = 236, thresholdCapability = 360, workers: 6
+Node server running on 0.0.0.0:8080
+26s: numReqs = 236, thresholdCapability = 360, workers: 6
+Node server running on 0.0.0.0:8080
+Creating new fork. Workers.ids = 1,4,5,6,7,8
+Starting HTTP server on fork #9
+Creating new fork. Workers.ids = 1,4,5,6,7,8,9
+27s: numReqs = 453, thresholdCapability = 480, workers: 8
+Starting HTTP server on fork #10
+28s: numReqs = 306, thresholdCapability = 480, workers: 8
+Node server running on 0.0.0.0:8080
+29s: numReqs = 283, thresholdCapability = 480, workers: 8
+Node server running on 0.0.0.0:8080
+30s: numReqs = 516, thresholdCapability = 480, workers: 8
+31s: numReqs = 780, thresholdCapability = 480, workers: 8
+32s: numReqs = 819, thresholdCapability = 480, workers: 8
+33s: numReqs = 807, thresholdCapability = 480, workers: 8
+34s: numReqs = 779, thresholdCapability = 480, workers: 8
+35s: numReqs = 845, thresholdCapability = 480, workers: 8
+36s: numReqs = 861, thresholdCapability = 480, workers: 8
+37s: numReqs = 755, thresholdCapability = 480, workers: 8
+38s: numReqs = 859, thresholdCapability = 480, workers: 8
+39s: numReqs = 836, thresholdCapability = 480, workers: 8
+40s: numReqs = 855, thresholdCapability = 480, workers: 8
+41s: numReqs = 753, thresholdCapability = 480, workers: 8
+42s: numReqs = 829, thresholdCapability = 480, workers: 8
+43s: numReqs = 820, thresholdCapability = 480, workers: 8
+44s: numReqs = 779, thresholdCapability = 480, workers: 8
+45s: numReqs = 782, thresholdCapability = 480, workers: 8
+46s: numReqs = 821, thresholdCapability = 480, workers: 8
+47s: numReqs = 844, thresholdCapability = 480, workers: 8
+48s: numReqs = 844, thresholdCapability = 480, workers: 8
+49s: numReqs = 844, thresholdCapability = 480, workers: 8
+50s: numReqs = 823, thresholdCapability = 480, workers: 8
+51s: numReqs = 813, thresholdCapability = 480, workers: 8
+52s: numReqs = 753, thresholdCapability = 480, workers: 8
+53s: numReqs = 803, thresholdCapability = 480, workers: 8
+54s: numReqs = 817, thresholdCapability = 480, workers: 8
+55s: numReqs = 840, thresholdCapability = 480, workers: 8
+56s: numReqs = 740, thresholdCapability = 480, workers: 8
+57s: numReqs = 796, thresholdCapability = 480, workers: 8
+58s: numReqs = 724, thresholdCapability = 480, workers: 8
+59s: numReqs = 755, thresholdCapability = 480, workers: 8
+60s: numReqs = 751, thresholdCapability = 480, workers: 8
+61s: numReqs = 867, thresholdCapability = 480, workers: 8
+62s: numReqs = 852, thresholdCapability = 480, workers: 8
+63s: numReqs = 834, thresholdCapability = 480, workers: 8
+64s: numReqs = 844, thresholdCapability = 480, workers: 8
+65s: numReqs = 827, thresholdCapability = 480, workers: 8
+66s: numReqs = 832, thresholdCapability = 480, workers: 8
+67s: numReqs = 852, thresholdCapability = 480, workers: 8
+68s: numReqs = 857, thresholdCapability = 480, workers: 8
+69s: numReqs = 842, thresholdCapability = 480, workers: 8
+70s: numReqs = 867, thresholdCapability = 480, workers: 8
+71s: numReqs = 767, thresholdCapability = 480, workers: 8
+72s: numReqs = 782, thresholdCapability = 480, workers: 8
+73s: numReqs = 825, thresholdCapability = 480, workers: 8
+74s: numReqs = 795, thresholdCapability = 480, workers: 8
+75s: numReqs = 775, thresholdCapability = 480, workers: 8
+76s: numReqs = 0, thresholdCapability = 480, workers: 8
+Killing unnecessary fork #10
+Killing unnecessary fork #9
+Killing unnecessary fork #8
+Killing unnecessary fork #7
+Killing unnecessary fork #6
+Killing unnecessary fork #5
+Killing unnecessary fork #4
+77s: numReqs = 0, thresholdCapability = 60, workers: 1
+78s: numReqs = 0, thresholdCapability = 60, workers: 1
+79s: numReqs = 0, thresholdCapability = 60, workers: 1
+80s: numReqs = 0, thresholdCapability = 60, workers: 1
