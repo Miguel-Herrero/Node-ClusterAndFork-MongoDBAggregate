@@ -4,6 +4,25 @@ var agenda = require("../job-worker");
 var MongoClient = require('mongodb').MongoClient;
 var dbUrl = "mongodb://caseuser:casepassword@ds035617.mongolab.com:35617/casedb";
 
+router.get('/all', function(req, res, next) {
+    MongoClient.connect(dbUrl, function(error, db) {
+        if(error) {
+            return next(error);
+        } else {
+            
+            var findMyDocs = function(db, callback) {
+                db.collection('population').find({}).toArray(function(err, docs) {
+                    callback(docs);
+                });
+            }
+            
+            findMyDocs(db, function(docs) {
+                res.send(docs);
+            });
+        }
+    });
+});
+
 /*
     GET cities listing.
     
@@ -31,6 +50,43 @@ router.get('/cities', function(req, res, next) {
                 db.close();
                 res.send(results);
             });
+        }
+    });
+});
+
+router.get('/cities2', function(req, res, next) {
+    MongoClient.connect(dbUrl, function(error, db) {
+        if(error) {
+            return next(error);
+        } else {
+            
+            var findData = function(db, callback) {
+                
+                db.collection('population').aggregate([
+                    { $group: {
+                        _id: { city: "$city", timestamp: "$timestamp" }
+                    } },
+
+                ], function(err, results) {
+                    if (err) {
+                        db.close();
+                        return next(err);
+                    }
+    
+                    db.close();
+                    callback(results);
+                });
+                
+                
+                
+            }
+            
+            findData(db, function(data) {
+                res.send(data);
+            });
+            
+            
+            
         }
     });
 });
@@ -95,6 +151,71 @@ router.get('/ages', function(req, res, next) {
                     });
                     
                 }
+            });
+        }
+    });
+});
+
+router.get('/ages2', function(req, res, next) {
+    MongoClient.connect(dbUrl, function(error, db) {
+        if(error) {
+            return next(error);
+        } else {
+            // General statistics of ages
+            db.collection('population').aggregate([
+                /*{ $unwind: '$population' },
+                { $group: { 
+                    _id: 0, 
+                    sum: { $sum: '$population.count' }, 
+                    avg: { $avg: '$population.age' }, 
+                    max: { $max: '$population.age' }, 
+                    min: { $min: '$population.age' }
+                } },
+                { $project: {
+                    _id: 0,
+                    ageStats: "$$ROOT",
+                } },
+                { $sort: { _id : 1 } }*/
+                //{ $unwind: '$population' },
+                { $project: {
+                    _id: 0,
+                    population: "$population"
+                } },
+                { $group: {
+                   _id: 0,
+                   max: { $max: "$population.age" },
+                   populatiooooon: { $population: 1 }
+                } }
+                
+                /*
+                    ageSum: {$sum: '$population.count'}, 
+                    ageAvg: { $avg: '$population.age' }, 
+                    ageMax: { $max: '$population.age' }, 
+                    ageMin: { $min: '$population.age' } } },
+                { $group: { 
+                    _id: '$population', 
+                    ageSum: {$sum: '$population.count'}, 
+                    ageAvg: { $avg: '$population.age' }, 
+                    ageMax: { $max: '$population.age' }, 
+                    ageMin: { $min: '$population.age' } } },
+                { $project: { 
+                    "_id": 0, 
+                    "ageSum": "$ageSum",
+                    "ageAvg": "$ageAvg",
+                    "ageMax": "$ageMax",
+                    "ageMin": "$ageMin",
+                    "population": "$$ROOT" } },
+                /*{ $group: { 
+                    _id: 0, 
+                    "ageAvg": "$ageAvg",
+                    "ageMax": "$ageMax",
+                    "ageMin": "$ageMin",
+                    populationSum: { $sum: '$population.count'}, 
+                    populationAvg: { $avg: '$population.age' }, 
+                    populationMax: { $max: '$population.age' }, 
+                    populationMin: { $min: '$population.age' } } }*/
+            ], function(err, results) {
+                res.send(results)
             });
         }
     });
