@@ -54,43 +54,6 @@ router.get('/cities', function(req, res, next) {
     });
 });
 
-router.get('/cities2', function(req, res, next) {
-    MongoClient.connect(dbUrl, function(error, db) {
-        if(error) {
-            return next(error);
-        } else {
-            
-            var findData = function(db, callback) {
-                
-                db.collection('population').aggregate([
-                    { $group: {
-                        _id: { city: "$city", timestamp: "$timestamp" }
-                    } },
-
-                ], function(err, results) {
-                    if (err) {
-                        db.close();
-                        return next(err);
-                    }
-    
-                    db.close();
-                    callback(results);
-                });
-                
-                
-                
-            }
-            
-            findData(db, function(data) {
-                res.send(data);
-            });
-            
-            
-            
-        }
-    });
-});
-
 /*
     GET ages listing.
 
@@ -161,62 +124,86 @@ router.get('/ages2', function(req, res, next) {
         if(error) {
             return next(error);
         } else {
-            // General statistics of ages
-            db.collection('population').aggregate([
-                /*{ $unwind: '$population' },
-                { $group: { 
-                    _id: 0, 
-                    sum: { $sum: '$population.count' }, 
-                    avg: { $avg: '$population.age' }, 
-                    max: { $max: '$population.age' }, 
-                    min: { $min: '$population.age' }
-                } },
-                { $project: {
-                    _id: 0,
-                    ageStats: "$$ROOT",
-                } },
-                { $sort: { _id : 1 } }*/
-                //{ $unwind: '$population' },
-                { $project: {
-                    _id: 0,
-                    population: "$population"
-                } },
-                { $group: {
-                   _id: 0,
-                   max: { $max: "$population.age" },
-                   populatiooooon: { $population: 1 }
-                } }
-                
-                /*
-                    ageSum: {$sum: '$population.count'}, 
-                    ageAvg: { $avg: '$population.age' }, 
-                    ageMax: { $max: '$population.age' }, 
-                    ageMin: { $min: '$population.age' } } },
-                { $group: { 
-                    _id: '$population', 
-                    ageSum: {$sum: '$population.count'}, 
-                    ageAvg: { $avg: '$population.age' }, 
-                    ageMax: { $max: '$population.age' }, 
-                    ageMin: { $min: '$population.age' } } },
-                { $project: { 
-                    "_id": 0, 
-                    "ageSum": "$ageSum",
-                    "ageAvg": "$ageAvg",
-                    "ageMax": "$ageMax",
-                    "ageMin": "$ageMin",
-                    "population": "$$ROOT" } },
-                /*{ $group: { 
-                    _id: 0, 
-                    "ageAvg": "$ageAvg",
-                    "ageMax": "$ageMax",
-                    "ageMin": "$ageMin",
-                    populationSum: { $sum: '$population.count'}, 
-                    populationAvg: { $avg: '$population.age' }, 
-                    populationMax: { $max: '$population.age' }, 
-                    populationMin: { $min: '$population.age' } } }*/
-            ], function(err, results) {
-                res.send(results)
+            
+            var findData = function(db, callback) {
+                db.collection('population').aggregate([
+                {
+                    "$unwind": "$population"
+                },
+                {
+                    "$group": {
+                        "_id": 0,
+                        "doc": { "$push": "$$ROOT" },
+                        "average_age": { "$avg": "$population.age" },
+                        "max_age": { "$max": "$population.age" },
+                        "min_age": { "$min": "$population.age" },
+                        "average_population": { "$avg": "$population.count" },
+                        "max_population": { "$max": "$population.count" },
+                        "min_population": { "$min": "$population.count" },
+                        "total_population": { "$sum": "$population.count" }
+                    }
+                },
+                {
+                    "$unwind": "$doc"
+                },
+                {
+                    "$group": {
+                        "_id": "$doc.population.age",
+                        "populationWithThisAge": { "$sum": "$doc.population.count" },
+                        "total_average_age": { "$first": "$average_age"},
+                        "total_max_age": { "$first": "$max_age"},
+                        "total_min_age": { "$first": "$min_age"},
+                        "total_average_population": { "$first": "$average_population"},
+                        "total_max_population": { "$first": "$max_population"},
+                        "total_min_population": { "$first": "$min_population"},
+                        "total_sum_population": { "$first": "$total_population"}
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        stats: {
+                            "total_average_age": "$total_average_age",
+                            "total_max_age": "$total_max_age",
+                            "total_min_age": "$total_min_age",
+                            "total_average_population": "$total_average_population",
+                            "total_max_population": "$total_max_population",
+                            "total_min_population": "$total_min_population",
+                            "total_sum_population": "$total_sum_population"
+                        },
+                        age: "$_id",
+                        count: "$populationWithThisAge"
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$stats",
+                        ages: { $push:
+                            {
+                                age: "$age",
+                                count: "$count"
+                            }
+                        }
+                        
+                    }
+                }
+                ], function(err, results) {
+                    if (err) {
+                        db.close();
+                        return next(err);
+                    }
+    
+                    db.close();
+                    callback(results);
+                });
+            }
+            
+            findData(db, function(data) {
+                res.send(data);
             });
+            
+            
+            
         }
     });
 });
@@ -291,6 +278,41 @@ router.get('/both', function(req, res, next) {
                     }, 500)
                 }
             });
+        }
+    });
+});
+
+router.get('/both2', function(req, res, next) {
+    MongoClient.connect(dbUrl, function(error, db) {
+        if(error) {
+            return next(error);
+        } else {
+            
+            var findData = function(db, callback) {
+                db.collection('population').aggregate([
+                    { $group: {
+                        _id: { city: "$city", timestamp: "$timestamp" },
+                        doc: { $push: "$$ROOT" },
+                        population: { $push: "$population" }
+                    } },
+                    { $unwind: "$population" }
+                ], function(err, results) {
+                    if (err) {
+                        db.close();
+                        return next(err);
+                    }
+    
+                    db.close();
+                    callback(results);
+                });
+            }
+            
+            findData(db, function(data) {
+                res.send(data);
+            });
+            
+            
+            
         }
     });
 });
