@@ -292,7 +292,7 @@ router.get('/both2', function(req, res, next) {
                 db.collection('population').aggregate([
                     { $group: {
                         _id: { city: "$city", timestamp: "$timestamp" },
-                        doc: { $push: "$$ROOT" },
+                        //doc: { $push: "$$ROOT" },
                         population: { $push: "$population" }
                     } },
                     { $unwind: "$population" }

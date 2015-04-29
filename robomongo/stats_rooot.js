@@ -1,3 +1,4 @@
+//Estadísticas al principio y luego arrastrar el ROOT. Pero no llego a sacar edad:count en array
 db.getCollection('population').aggregate([
     { $unwind: "$population" },
     { $group: {

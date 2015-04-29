@@ -1,3 +1,4 @@
+// For each INSERT, age statistics
 db.getCollection('population').aggregate([
     { $unwind: "$population" },
     { $group: {
@@ -9,7 +10,9 @@ db.getCollection('population').aggregate([
         "maxAge": { $max: "$population.age" },
         "minAge": { $min: "$population.age" },
         "avgAge": { $avg: "$population.age" },
-        "sumPopulation": { $sum: "$population.count" }
+        "sumPopulation": { $sum: "$population.count" },
+        "maxPopulation": { $max: "$population.count" },
+        "minPopulation": { $min: "$population.count" }
     } },
     { $sort: { "_id.timestamp": 1 } },
     { $unwind: "$root" },
@@ -20,7 +23,9 @@ db.getCollection('population').aggregate([
             maxAge: "$maxAge",
             minAge: "$minAge",
             avgAge: "$avgAge",
-            sumPopulation: "$sumPopulation"
+            sumPopulation: "$sumPopulation",
+            maxPopulation: "$maxPopulation",
+            minPopulation: "$minPopulation"
         },
         //root: "$root"
     }},

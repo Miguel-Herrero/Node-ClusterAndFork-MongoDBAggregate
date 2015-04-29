@@ -1,3 +1,4 @@
+//INTENTO de "stats" al principio y luego un array de suma de Counts de cada edad
 db.getCollection('population').aggregate([
     { $unwind: "$population" },
     { $group: {
@@ -46,11 +47,19 @@ db.getCollection('population').aggregate([
     //{ $unwind: "$root"},
     { $project: {
         _id: "$stats",
-        root: "$root"
+        root: "$root.population"
     }},
+    {$unwind: "$root"},
     { $group: {
-        _id: "$_id",
-        age: {$last: "$root.population"}
-    }}
-
+        _id: {stats: "$_id", age: "$root.age", count: "$root.count"}
+        //age: {$max: "$root.age"}
+    }},
+    {$project: {
+        _id: 0,
+        stats: "$_id.stats",
+        ages: {
+            age: "$_id.age",
+            count: "$_id.count"
+        }
+    }},
 ]);
